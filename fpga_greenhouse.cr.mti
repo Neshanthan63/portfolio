@@ -1,0 +1,15 @@
+D:/greenhouseagricultural_monitor.v {1 {vlog -work work -stats=none D:/greenhouseagricultural_monitor.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module GreenhouseMonitor
+
+Top level modules:
+	GreenhouseMonitor
+
+} {} {}} D:/greenhousemonitor_agriculture_tb.v {1 {vlog -work work -stats=none D:/greenhousemonitor_agriculture_tb.v
+Model Technology ModelSim - Intel FPGA Edition vlog 2020.1 Compiler 2020.02 Feb 28 2020
+-- Compiling module GreenhouseMonitor_tb
+
+Top level modules:
+	GreenhouseMonitor_tb
+
+} {} {}}

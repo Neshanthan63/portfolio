@@ -1,0 +1,59 @@
+m255
+K4
+z2
+!s11f vlog 2020.1 2020.02, Feb 28 2020
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+dD:/
+vGreenhouseMonitor
+!s110 1744783177
+!i10b 1
+!s100 FTG4aTb6TEUJIhg1aC`]Z3
+Z0 !s11b Dg1SIo80bB@j0V0VzS_@n1
+I7JnF[2F=7MJz7zh]YLb0m3
+Z1 VDg1SIo80bB@j0V0VzS_@n1
+Z2 dD:/verilog/Greenhouse
+w1744726353
+8D:/verilog/Greenhouse/greenhousemonitor_agri.v
+FD:/verilog/Greenhouse/greenhousemonitor_agri.v
+!i122 38
+L0 1 75
+Z3 OV;L;2020.1;71
+r1
+!s85 0
+31
+!s108 1744783176.000000
+!s107 D:/verilog/Greenhouse/greenhousemonitor_agri.v|
+!s90 -F=D://vlog.opt|-F=|-reportprogress|300|-work|work|-stats=none|D:/verilog/Greenhouse/greenhousemonitor_agri.v|
+!i113 1
+Z4 o-work work
+Z5 tCvgOpt 0
+n@greenhouse@monitor
+vGreenhouseMonitor_tb
+!s110 1744726361
+!i10b 1
+!s100 Xl459UWlK6M50b=zDn1Nb0
+R0
+IZaUb93`bPVnl57@icHOKT1
+R1
+R2
+w1744726350
+8D:/verilog/Greenhouse/greenhousemonitor_agri_tb.v
+FD:/verilog/Greenhouse/greenhousemonitor_agri_tb.v
+!i122 36
+L0 1 105
+R3
+r1
+!s85 0
+31
+!s108 1744726360.000000
+!s107 D:/verilog/Greenhouse/greenhousemonitor_agri_tb.v|
+!s90 -F=D://vlog.opt|-F=|-reportprogress|300|-work|work|-stats=none|D:/verilog/Greenhouse/greenhousemonitor_agri_tb.v|
+!i113 1
+R4
+R5
+n@greenhouse@monitor_tb

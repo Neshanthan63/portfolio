@@ -1,0 +1,81 @@
+module GreenhouseMonitor (
+    input wire clk,
+    input wire rst,
+    input wire [7:0] temperature,
+    input wire [7:0] humidity,
+    input wire [7:0] soil_moisture,
+    input wire [7:0] co2_level,
+    input wire [7:0] light_intensity,
+    input wire [7:0] pressure,
+    input wire [7:0] ph_level,
+    input wire [7:0] pest_level,
+    input wire [7:0] leaf_color_in, // Represents a direct reading (e.g., 0-100)
+    input wire remote_fan,
+    input wire remote_irrigation,
+    input wire remote_humidity_control,
+    output reg fan,
+    output reg irrigation,
+    output reg humidity_control,
+    output reg alert,
+    output reg [7:0] growth_status,
+    output reg [7:0] leaf_health_out // Output for the refined leaf health
+);
+
+reg [7:0] internal_leaf_health; // Internal register for refined leaf health (0-100)
+
+always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        fan <= 0;
+        irrigation <= 0;
+        humidity_control <= 0;
+        alert <= 0;
+        growth_status <= 8'b00000000;
+        internal_leaf_health <= 8'd80; // Initialize to a reasonably healthy value
+    end else begin
+        // Automatic Controls (same as before)
+        if (temperature > 40 || co2_level > 100) fan <= 1; else if (remote_fan == 0) fan <= 0; else fan <= 0;
+        if (soil_moisture < 30 || ph_level < 50 || ph_level > 75) irrigation <= 1; else if (remote_irrigation == 0) irrigation <= 0; else irrigation <= 0;
+        if (humidity < 40 || humidity > 70) humidity_control <= 1; else if (remote_humidity_control == 0) humidity_control <= 0; else humidity_control <= 0;
+
+        // Alert Logic (using direct leaf color input for immediate alert)
+        if (pest_level > 60 || leaf_color_in < 25) alert <= 1; else alert <= 0;
+        if (temperature > 45 || co2_level > 120 || soil_moisture < 20 || light_intensity < 10 || humidity < 30) alert <= 1;
+
+        // Growth Prediction Logic (same as before)
+        if (temperature > 25 && temperature < 35 && soil_moisture > 40 && humidity > 50 && humidity < 70 && light_intensity > 50) growth_status <= 8'b11111111;
+        else if (temperature > 35 || soil_moisture < 40 || humidity < 50 || light_intensity < 50) growth_status <= 8'b01111111;
+        else growth_status <= 8'b00001111;
+
+        // Refined Leaf Health Update Logic
+        if (pest_level > 70) begin
+            if (internal_leaf_health > 5) internal_leaf_health <= internal_leaf_health - 5; // Faster decline with high pests
+        end else if (pest_level > 40) begin
+            if (internal_leaf_health > 1) internal_leaf_health <= internal_leaf_health - 2; // Moderate decline
+        end
+
+        if (light_intensity > 70 && internal_leaf_health < 95) begin
+            internal_leaf_health <= internal_leaf_health + 2; // Good light helps recovery
+        end else if (light_intensity > 40 && light_intensity <= 70 && internal_leaf_health < 98) begin
+            internal_leaf_health <= internal_leaf_health + 1; // Moderate light helps slightly
+        end
+
+        // Consider direct leaf color input to influence long-term health
+        if (leaf_color_in < 30 && internal_leaf_health > 10) begin
+            internal_leaf_health <= internal_leaf_health - 1; // Poor color over time reduces health
+        end else if (leaf_color_in > 70 && internal_leaf_health < 90) begin
+            internal_leaf_health <= internal_leaf_health + 1; // Good color over time improves health
+        end
+
+        // Clamping
+        if (internal_leaf_health > 100) internal_leaf_health <= 100;
+        if (internal_leaf_health < 0) internal_leaf_health <= 0;
+    end
+end
+
+assign growth_status[7:6] = (temperature > 25 && temperature < 35) ? 2'b11 : 2'b00;
+assign growth_status[5:4] = (soil_moisture > 40) ? 2'b11 : 2'b00;
+assign growth_status[3:2] = (humidity > 50 && humidity < 70) ? 2'b11 : 2'b00;
+assign growth_status[1:0] = (light_intensity > 50) ? 2'b11 : 2'b00;
+assign leaf_health_out = internal_leaf_health; // Output the refined value
+
+endmodule
